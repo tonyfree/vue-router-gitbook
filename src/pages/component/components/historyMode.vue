@@ -1,0 +1,54 @@
+<template>
+  <section class="normal markdown-section">
+
+    <h1 id="html5-history-模式">HTML5 History 模式</h1>
+    <p>
+      <code>vue-router</code> 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。</p>
+    <p>如果不想要很丑的 hash，我们可以用路由的
+      <strong>history 模式</strong>，这种模式充分利用
+      <code>history.pushState</code> API 来完成 URL 跳转而无须重新加载页面。</p>
+    <pre><code class="lang-js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+    mode: <span class="hljs-string">'history'</span>,
+    routes: [...]
+  })
+  </code></pre>
+    <p>当你使用 history 模式时，URL 就像正常的 url，例如
+      <code>http://yoursite.com/user/id</code>，也好看！</p>
+    <p>不过这种模式要玩好，还需要后台配置支持。因为我们的应用是个单页客户端应用，如果后台没有正确的配置，当用户在浏览器直接访问
+      <code>http://oursite.com/user/id</code> 就会返回 404，这就不好看了。</p>
+    <p>所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个
+      <code>index.html</code> 页面，这个页面就是你 app 依赖的页面。</p>
+    <h2 id="后端配置例子">后端配置例子</h2>
+    <h4 id="apache">Apache</h4>
+    <pre><code class="lang-apache"><span class="hljs-section">&lt;IfModule mod_rewrite.c&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteEngine</span></span> <span class="hljs-literal">On</span>
+    <span class="hljs-attribute">RewriteBase</span> /
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> ^index\.html$ -<span class="hljs-meta"> [L]</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{REQUEST_FILENAME}</span> !-f
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{REQUEST_FILENAME}</span> !-d
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> . /index.html<span class="hljs-meta"> [L]</span>
+  <span class="hljs-section">&lt;/IfModule&gt;</span>
+  </code></pre>
+    <h4 id="nginx">nginx</h4>
+    <pre><code class="lang-nginx"><span class="hljs-attribute">location</span> / {
+    <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.html;
+  }
+  </code></pre>
+    <h4 id="nodejs-express">Node.js (Express)</h4>
+    <p>
+      <a href="https://github.com/bripkens/connect-history-api-fallback" target="_blank">https://github.com/bripkens/connect-history-api-fallback</a>
+    </p>
+    <h2 id="警告">警告</h2>
+    <p>给个警告，因为这么做以后，你的服务器就不再返回 404 错误页面，因为对于所有路径都会返回
+      <code>index.html</code> 文件。为了避免这种情况，你应该在 Vue 应用里面覆盖所有的路由情况，然后在给出一个 404 页面。</p>
+    <pre><code class="lang-js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+    mode: <span class="hljs-string">'history'</span>,
+    routes: [
+      { path: <span class="hljs-string">'*'</span>, component: NotFoundComponent }
+    ]
+  })
+  </code></pre>
+    <p>或者，如果你是用 Node.js 作后台，可以使用服务端的路由来匹配 URL，当没有匹配到路由的时候返回 404，从而实现 fallback。</p>
+
+  </section>
+</template>

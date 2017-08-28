@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Introduction · GitBook</title>
+  <link rel="shortcut icon" href="https://router.vuejs.org/gitbook/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body class="DejaVue">
+  <div class="book without-animation with-summary">
+    <div class="book-summary">
+      <div id="book-search-input" role="search">
+        <input type="text" placeholder="輸入並搜尋">
+      </div>
+      <nav role="navigation">
+        <ul class="summary">
+          <li class="chapter" 
+          :class="{active:curPath==route.path}" 
+          :data-path="route.path" 
+          v-for="route in routes" 
+          @click="to(route)">
+            <a  v-if="!route.children">
+              {{route.title}}
+            </a>
+            <template v-else>
+              <span>{{route.title}}</span>
+              <ul class="articles">
+                <li class="chapter "  
+                  :class="{active:curPath==item.path}" 
+                  :data-path="item.path" 
+                  v-for="item in route.children" 
+                  @click.stop="to(item)">
+                  <a>
+                    {{item.title}}
+                  </a>
+                </li>
+              </ul>
+            </template>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="https://www.gitbook.com/" target="blank" class="gitbook-link">
+            本書使用 GitBook 釋出
+        </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <!-- Title -->
+          <a class="btn pull-left js-toolbar-action" aria-label="" href="https://router.vuejs.org/zh-cn/#"><i class="fa fa-align-justify"></i></a>
+          <a class="btn pull-left js-toolbar-action" aria-label="" href="https://router.vuejs.org/zh-cn/#"><i class="fa fa-edit"></i> Edit This Page</a>
+          <a class="btn pull-right js-toolbar-action" aria-label="GitHub" href="https://router.vuejs.org/zh-cn/#"><i class="fa fa-github"></i></a>
+          <div class="dropdown pull-right js-toolbar-action"><a class="btn toggle-dropdown" aria-label="Share" href="https://router.vuejs.org/zh-cn/#"><i class="fa fa-share-alt"></i></a>
+            <div class="dropdown-menu dropdown-left">
+              <div class="dropdown-caret"><span class="caret-outer"></span><span class="caret-inner"></span></div>
+              <div class="buttons">
+                <button class="button size-5 ">Facebook</button>
+                <button class="button size-5 ">Google+</button>
+                <button class="button size-5 ">Twitter</button>
+                <button class="button size-5 ">Weibo</button>
+                <button class="button size-5 ">Instapaper</button>
+              </div>
+            </div>
+          </div>
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+            <a href="https://router.vuejs.org/zh-cn/">Introduction</a>
+          </h1>
+        </div>
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+            <div id="book-search-results">
+              <div class="search-noresults">
+                <component :is="currentView">
+                  <!-- 非活动组件将被缓存！ -->
+                </component>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

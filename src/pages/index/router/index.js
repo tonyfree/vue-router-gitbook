@@ -3,15 +3,15 @@ import Router from 'vue-router'
 
 let routes = [{
   path: '/',
-  redirect: '/introduction'
+  redirect: '/introduction.html'
 },{
   title: 'Introduction',
-  path: '/introduction',
+  path: '/introduction.html',
   name: 'introduction',
   component: require('components/introduction.vue')
 }, {
   title: '安装',
-  path: '/installation',
+  path: '/installation.html',
   name: 'installation',
   component: require('components/installation.vue')
 }, {

@@ -1,6 +1,7 @@
 import 'css/style.css'
 import 'css/website.css'
 import 'css/vue.css'
+import 'css/website.css'
 
 import Vue from 'vue'
 import {router,routes} from './router'

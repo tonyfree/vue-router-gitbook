@@ -15,10 +15,10 @@
       </div>
       <nav role="navigation">
         <ul class="summary">
-          <li class="chapter" 
-          :class="{active:curPath==route.path}" 
-          :data-path="route.path" 
-          v-for="route in routes" 
+          <li class="chapter"
+          :class="{active:curPath==route.path}"
+          :data-path="route.path"
+          v-for="route in routes"
           @click="to(route)">
             <a  v-if="!route.children">
               {{route.title}}
@@ -26,10 +26,10 @@
             <template v-else>
               <span>{{route.title}}</span>
               <ul class="articles">
-                <li class="chapter "  
-                  :class="{active:curPath==item.path}" 
-                  :data-path="item.path" 
-                  v-for="item in route.children" 
+                <li class="chapter "
+                  :class="{active:curPath==item.path}"
+                  :data-path="item.path"
+                  v-for="item in route.children"
                   @click.stop="to(item)">
                   <a>
                     {{item.title}}

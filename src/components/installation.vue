@@ -39,3 +39,11 @@
 
   </section>
 </template>
+
+<script>
+  export default {
+    created() {
+      console.log("==========  installation  ==========")
+    }
+  }
+</script>

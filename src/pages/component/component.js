@@ -8,12 +8,12 @@ import routes from 'js/routerConfig.js'
 let components = {}
 routes.forEach(route => {
   if (route.name) {
-    components[route.name] = require(`./components/${route.name}.vue`)
+    components[route.name] = require(`components/${route.name}.vue`)
   }
   if (route.children) {
     route.children.forEach(child => {
       if (child.name) {
-        components[child.name] = require(`./components/${child.name}.vue`)
+        components[child.name] = require(`components/${child.name}.vue`)
       }
     })
   }

@@ -79,16 +79,21 @@
           <div class="page-inner">
             <div id="book-search-results">
               <div class="search-noresults">
-                <router-view></router-view>
+                <transition name="fade">
+                  <router-view></router-view>
+                </transition>
               </div>
             </div>
           </div>
         </div>
-        <a href="https://router.vuejs.org/zh-cn/installation.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 安装"
-        style="margin-right: 17px;">
-            <i class="fa fa-angle-right"></i>
-        </a>
       </div>
+      <a  class="navigation navigation-prev navigation-unique" @click="prev" >
+        <i class="fa fa-angle-left"></i>
+      </a>
+      <a  class="navigation navigation-next navigation-unique" @click="next" 
+      style="margin-right: 17px;">
+        <i class="fa fa-angle-right"></i>
+      </a>
     </div>
   </div>
 </body>

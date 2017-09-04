@@ -16,39 +16,39 @@
       <nav role="navigation">
         <ul class="summary">
           <router-link class="chapter" 
-
             :data-path="route.path" 
             v-for="route in routes" 
             :to="route.path"
+            @click.native="to(route)"
             tag="li"
-          >
+            >
             <a  v-if="!route.children">
               {{route.title}}
             </a>
             <template v-else>
               <span>{{route.title}}</span>
               <ul class="articles">
-                <!-- <router-link class="chapter "  
-            
-                  :data-path="item.path" 
-                  v-for="item in route.children" 
-                  :to="route.path+'/'+item.path"
-                  tag="li"  
+                <router-link class="chapter "            
+                :data-path="sub.path" 
+                v-for="sub in route.children" 
+                :to="{name: sub.name}"
+                @click.native.stop="to(route,sub)"
+                tag="li"  
                 >
                   <a>
-                    {{item.title}}
+                    {{sub.title}}
                   </a>
-                </router-link> -->
-                <li class="chapter "  
-                      :data-path="sub.path" 
-                      v-for="sub in route.children" 
-                      @click.stop="to(route,sub)" 
-                      :class="{active:curPath==(route.path+'/'+sub.path)}"
-                    >
-                      <a>
-                        {{sub.title}}
-                      </a>
-                    </li>
+                </router-link>
+                <!-- <li class="chapter "  
+                  :data-path="sub.path" 
+                  v-for="sub in route.children" 
+                  @click.stop="to(route,sub)" 
+                  :class="{active:curPath==(route.path+'/'+sub.path)}"
+                >
+                  <a>
+                    {{sub.title}}
+                  </a>
+                </li> -->
               </ul>
             </template>
           </router-link>
@@ -97,11 +97,11 @@
           </div>
         </div>
       </div>
-      <a  class="navigation navigation-prev navigation-unique" @click="prev" >
+      <a  class="navigation navigation-prev navigation-unique" @click="prev" v-show="curRoute.prev">
         <i class="fa fa-angle-left"></i>
       </a>
-      <a  class="navigation navigation-next navigation-unique" @click="next" 
-      style="margin-right: 17px;">
+      <a  class="navigation navigation-next navigation-unique" @click="next"  v-show="curRoute.next"
+      style="margin-right: 17px;" >
         <i class="fa fa-angle-right"></i>
       </a>
     </div>

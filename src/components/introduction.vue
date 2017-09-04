@@ -94,9 +94,14 @@
 </template>
 
 <script>
+  import bus from 'js/bus.js'
   export default {
     created() {
       console.log("==========  introduction  ==========")
+      bus.$emit('bus',{
+        name: 'tony',
+        age: 20
+      })
     }
   }
 </script>

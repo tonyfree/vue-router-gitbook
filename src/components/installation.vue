@@ -41,9 +41,13 @@
 </template>
 
 <script>
+  import bus from 'js/bus.js'
   export default {
     created() {
       console.log("==========  installation  ==========")
+      bus.$on('bus', (obj) => {
+        console.log(obj)
+      })
     }
   }
 </script>

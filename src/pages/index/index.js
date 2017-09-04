@@ -10,21 +10,54 @@ new Vue({
   el: '.book',
   data: {
     routes,
-    curPath: ''
+    curPath: '',
+    curRoute: '',
+    curIndex: 0,
+    routeList: null
   },
   created() {
     this.curPath = this.$route.fullPath
+    this.findRoute(this.$route.name)
   },
   methods: {
     to(route,sub) {
-      router.push({name: sub.name})
-      this.curPath = route.path+'/'+sub.path
+      if(sub) {
+        this.curRoute = sub
+      } else {
+        this.curRoute = route
+      }
     },
     next() {
-
+      this.findRoute(this.$route.name)
+      this.curIndex++
+      this.curRoute = this.routeList[this.curIndex]
+      router.push({name: this.curRoute.name})
     },
     prev() {
-
+      this.findRoute(this.$route.name)
+      this.curIndex--
+      this.curRoute = this.routeList[this.curIndex]
+      router.push({name: this.curRoute.name})
+    },
+    findRoute(name) {
+      routes.forEach((route,index) => {
+        if(route.name == name) {
+          this.routeList = routes
+          this.curRoute = route
+          this.curIndex = index
+          return
+        }
+        if(route.children){
+          route.children.forEach((sub,i) => {
+            if(sub.name == name) {
+              this.routeList = route.children
+              this.curRoute = sub
+              this.curIndex = i
+              return
+            }
+          })
+        }
+      })
     }
   },
   router

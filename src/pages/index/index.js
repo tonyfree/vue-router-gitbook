@@ -9,9 +9,17 @@ import {router,routes} from './router'
 new Vue({
   el: '.book',
   data: {
-    routes
+    routes,
+    curPath: ''
+  },
+  created() {
+    this.curPath = this.$route.fullPath
   },
   methods: {
+    to(route,sub) {
+      router.push({name: sub.name})
+      this.curPath = route.path+'/'+sub.path
+    },
     next() {
 
     },

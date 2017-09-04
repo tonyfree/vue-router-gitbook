@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+Vue.use(Router)
 
 let routes = [{
   path: '/',
@@ -134,11 +135,14 @@ let routes = [{
   }]
 }]
 
-Vue.use(Router)
 
 let router = new Router({
   linkActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  next()
 })
 
 export {

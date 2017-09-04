@@ -28,7 +28,7 @@
             <template v-else>
               <span>{{route.title}}</span>
               <ul class="articles">
-                <router-link class="chapter "  
+                <!-- <router-link class="chapter "  
             
                   :data-path="item.path" 
                   v-for="item in route.children" 
@@ -38,7 +38,17 @@
                   <a>
                     {{item.title}}
                   </a>
-                </router-link>
+                </router-link> -->
+                <li class="chapter "  
+                      :data-path="sub.path" 
+                      v-for="sub in route.children" 
+                      @click.stop="to(route,sub)" 
+                      :class="{active:curPath==(route.path+'/'+sub.path)}"
+                    >
+                      <a>
+                        {{sub.title}}
+                      </a>
+                    </li>
               </ul>
             </template>
           </router-link>

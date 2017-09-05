@@ -26,6 +26,8 @@ new Vue({
       } else {
         this.curRoute = route
       }
+      // 编程式路由将覆盖router-link路由
+      // router.push({name: 'introduction'})
     },
     next() {
       this.findRoute(this.$route.name)
@@ -60,5 +62,12 @@ new Vue({
       })
     }
   },
-  router
+  router,
+  watch: {
+    '$route': function() {
+      this.$nextTick(() => {
+        this.$refs['bookBody'].scrollTop = 0
+      })
+    }
+  }
 })

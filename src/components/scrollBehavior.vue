@@ -1,55 +1,65 @@
 <template>
   <section class="normal markdown-section">
 
-    <h1 id="过渡动效">过渡动效</h1>
+    <h1 id="滚动行为">滚动行为</h1>
+    <p>使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。
+      <code>vue-router</code> 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。</p>
     <p>
-      <code>&lt;router-view&gt;</code> 是基本的动态组件，所以我们可以用
-      <code>&lt;transition&gt;</code> 组件给它添加一些过渡效果：</p>
-    <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">transition</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">transition</span>&gt;</span>
-  </code></pre>
+      <strong>注意: 这个功能只在 HTML5 history 模式下可用。</strong>
+    </p>
+    <p>当创建一个 Router 实例，你可以提供一个
+      <code>scrollBehavior</code> 方法：</p>
+    <pre><code class="lang-js"><span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> VueRouter({
+      routes: [...],
+      scrollBehavior (to, <span class="hljs-keyword">from</span>, savedPosition) {
+        <span class="hljs-comment">// return 期望滚动到哪个的位置</span>
+      }
+    })
+    </code></pre>
     <p>
-      <a href="http://vuejs.org/guide/transitions.html" target="_blank">
-        <code>&lt;transition&gt;</code> 的所有功能</a> 在这里同样适用。</p>
-    <h3 id="单个路由的过渡">单个路由的过渡</h3>
-    <p>上面的用法会给所有路由设置一样的过渡效果，如果你想让每个路由组件有各自的过渡效果，可以在各路由组件内使用
-      <code>&lt;transition&gt;</code> 并设置不同的 name。</p>
-    <pre><code class="lang-js"><span class="hljs-keyword">const</span> Foo = {
-    template: <span class="hljs-string">`
-      &lt;transition name="slide"&gt;
-        &lt;div class="foo"&gt;...&lt;/div&gt;
-      &lt;/transition&gt;
-    `</span>
-  }
-
-  <span class="hljs-keyword">const</span> Bar = {
-    template: <span class="hljs-string">`
-      &lt;transition name="fade"&gt;
-        &lt;div class="bar"&gt;...&lt;/div&gt;
-      &lt;/transition&gt;
-    `</span>
-  }
-  </code></pre>
-    <h3 id="基于路由的动态过渡">基于路由的动态过渡</h3>
-    <p>还可以基于当前路由与目标路由的变化关系，动态设置过渡效果：</p>
-    <pre><code class="lang-html"><span class="hljs-comment">&lt;!-- 使用动态的 transition name --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">transition</span> <span class="hljs-attr">:name</span>=<span class="hljs-string">"transitionName"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-view</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">transition</span>&gt;</span>
-  </code></pre>
-    <pre><code class="lang-js"><span class="hljs-comment">// 接着在父组件内</span>
-  <span class="hljs-comment">// watch $route 决定使用哪种过渡</span>
-  watch: {
-    <span class="hljs-string">'$route'</span> (to, <span class="hljs-keyword">from</span>) {
-      <span class="hljs-keyword">const</span> toDepth = to.path.split(<span class="hljs-string">'/'</span>).length
-      <span class="hljs-keyword">const</span> fromDepth = <span class="hljs-keyword">from</span>.path.split(<span class="hljs-string">'/'</span>).length
-      <span class="hljs-keyword">this</span>.transitionName = toDepth &lt; fromDepth ? <span class="hljs-string">'slide-right'</span> : <span class="hljs-string">'slide-left'</span>
+      <code>scrollBehavior</code> 方法接收
+      <code>to</code> 和
+      <code>from</code> 路由对象。第三个参数
+      <code>savedPosition</code> 当且仅当
+      <code>popstate</code> 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。</p>
+    <p>这个方法返回滚动位置的对象信息，长这样：</p>
+    <ul>
+      <li>
+        <code>{ x: number, y: number }</code>
+      </li>
+      <li>
+        <code>{ selector: string }</code>
+      </li>
+    </ul>
+    <p>如果返回一个布尔假的值，或者是一个空对象，那么不会发生滚动。</p>
+    <p>举例：</p>
+    <pre><code class="lang-js">scrollBehavior (to, <span class="hljs-keyword">from</span>, savedPosition) {
+      <span class="hljs-keyword">return</span> { x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span> }
     }
-  }
-  </code></pre>
-    <p>查看完整例子
-      <a href="https://github.com/vuejs/vue-router/blob/next/examples/transitions/app.js" target="_blank">这里</a>.</p>
+    </code></pre>
+    <p>对于所有路由导航，简单地让页面滚动到顶部。</p>
+    <p>返回
+      <code>savedPosition</code>，在按下 后退/前进 按钮时，就会像浏览器的原生表现那样：</p>
+    <pre><code class="lang-js">scrollBehavior (to, <span class="hljs-keyword">from</span>, savedPosition) {
+      <span class="hljs-keyword">if</span> (savedPosition) {
+        <span class="hljs-keyword">return</span> savedPosition
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> { x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span> }
+      }
+    }
+    </code></pre>
+    <p>如果你要模拟『滚动到锚点』的行为：</p>
+    <pre><code class="lang-js">scrollBehavior (to, <span class="hljs-keyword">from</span>, savedPosition) {
+      <span class="hljs-keyword">if</span> (to.hash) {
+        <span class="hljs-keyword">return</span> {
+          selector: to.hash
+        }
+      }
+    }
+    </code></pre>
+    <p>我们还可以利用
+      <a href="meta.html">路由元信息</a> 更细颗粒度地控制滚动。查看完整例子
+      <a href="https://github.com/vuejs/vue-router/blob/next/examples/scroll-behavior/app.js" target="_blank">这里</a>.</p>
 
   </section>
 </template>

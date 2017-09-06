@@ -28,6 +28,7 @@ new Vue({
       }
       // 编程式路由将覆盖router-link路由
       // router.push({name: 'introduction'})
+      // router.push({name: this.curRoute.name})
     },
     next() {
       this.findRoute(this.$route.name)
@@ -64,10 +65,18 @@ new Vue({
   },
   router,
   watch: {
-    '$route': function() {
-      this.$nextTick(() => {
-        this.$refs['bookBody'].scrollTop = 0
-      })
+    '$route'(to, from) {
+      console.log('listen $route')
+      this.$refs['bookBody'].scrollTop = 0
+      // document.title = `${this.curRoute.title} · GitBook`      
+    },
+    'curRoute'(val) {
+      document.title = `${val.title} · GitBook`
+      /**
+       * 这里没有用'$route'的监听处理，是因为事件触发的优先级：
+       * 1.原生绑定事件next、prev执行，编程式导航修改route ==> '$route'监听触发
+       * 2.router-link上的事件绑定：to修改route ==> '$route'监听触发 ==> to事件执行 ==> 如果to事件内部通过编程式导航修改route  ==> '$route'监听触发
+       */
     }
-  }
+   }
 })
